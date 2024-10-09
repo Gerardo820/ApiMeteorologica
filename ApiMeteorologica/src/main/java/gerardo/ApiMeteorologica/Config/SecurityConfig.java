@@ -23,20 +23,21 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         return http
-            .csrf(csrf ->
-                csrf
-                .disable())
-            .authorizeHttpRequests(authRequest ->
-              authRequest
-                .requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .csrf(csrf ->
+                        csrf
+                                .disable())
+                .authorizeHttpRequests(authRequest ->
+                        authRequest
+                                .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/resources/**", "/static/**", "/css/**", "/js/**", "/images/**").permitAll()
+                                .anyRequest().authenticated()
                 )
-            .sessionManagement(sessionManager->
-                sessionManager
-                  .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authProvider)
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
+                .sessionManagement(sessionManager->
+                        sessionManager
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
 
 
     }
